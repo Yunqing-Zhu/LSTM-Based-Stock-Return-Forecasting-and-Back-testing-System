@@ -18,7 +18,7 @@ to predict stock market movements and generate trading signals.
 
 ## System Architecture
 
-、、、
+```
 
 ├── Neural Network (PyTorch)
 │   ├── LSTM Model with 60-day lookback window
@@ -38,18 +38,19 @@ to predict stock market movements and generate trading signals.
 └── Sector Analysis
     ├── Concept/sector classification
     └── Leading stock identification
-、、、
+```
 
 
 ## Installation
 **Prerequisites**
 
-、、、
+```
 CUDA-compatible GPU (optional, for faster LSTM training)
-、、、
+```
 
 ***Setup***
-、、、
+
+```
 # Clone the repository
 git clone https://github.com/yourusername/ai-quant-trading.git
 cd ai-quant-trading
@@ -60,7 +61,7 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 # Install dependencies
 pip install -r requirements.txt
-、、、
+```
 
 
 ## Dependencies
@@ -74,31 +75,35 @@ pip install -r requirements.txt
 ## Usage
 
 **1. Environment Verification**
-、、、
+
+```
 python env_test.py
-、、、
+```
+
 
 **2. LSTM Model Training**
-、、、
+
+```
 # Train the LSTM model (separate training script needed)
 python train_lstm.py --stock sh600372 --epochs 100
-、、、
+```
 
 **3. Backtesting Execution**
-、、、
+
+```
 python backtest_lstm.py
-、、、
+```
 
 **4. Sector Analysis**
 
-、、、
+```
 from stock_a import get_em_concept, get_em_concept_stocks
 # Get all concept sectors
 concepts = get_em_concept()
 
 # Get stocks in a specific sector (e.g., BK0918)
 stocks = get_em_concept_stocks("BK0918")
-、、、
+```
 
 ## LSTM Trading Strategy
 
@@ -130,7 +135,7 @@ Uses 60-day rolling returns and volatility to classify market into 6 regimes:
 
 ## Project Structure
 
-、、、
+```
 
 text
 ai-quant-trading/
@@ -145,7 +150,7 @@ ai-quant-trading/
 │   └── stock_a.py           # Data fetching module
 ├── requirements.txt         # Python dependencies
 └── README.md               # This file
-、、、
+```
 
 
 ## Performance Metrics
