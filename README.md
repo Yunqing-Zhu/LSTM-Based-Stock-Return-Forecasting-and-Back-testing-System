@@ -1,9 +1,11 @@
 # AI Quantitative Trading System with LSTM
+
 A comprehensive AI-driven quantitative trading system 
 that combines deep learning (LSTM neural networks) with traditional backtesting frameworks
 to predict stock market movements and generate trading signals.
 
 ## Key Features
+
 - **LSTM Neural Network**: for stock price prediction using sequential market data
 - **Backtrader Integration**: for professional-grade backtesting with realistic market simulations
 - **Market Regime Detection**: incorporating bull/bear market states into trading decisions
@@ -17,6 +19,7 @@ to predict stock market movements and generate trading signals.
 ## System Architecture
 
 、、、
+
 ├── Neural Network (PyTorch)
 │   ├── LSTM Model with 60-day lookback window
 │   ├── OHLCV feature engineering
@@ -37,10 +40,13 @@ to predict stock market movements and generate trading signals.
     └── Leading stock identification
 、、、
 
+
 ## Installation
 **Prerequisites**
-- Python 3.8+
-- CUDA-compatible GPU (optional, for faster LSTM training)
+
+、、、
+CUDA-compatible GPU (optional, for faster LSTM training)
+、、、
 
 ***Setup***
 、、、
@@ -58,6 +64,7 @@ pip install -r requirements.txt
 
 
 ## Dependencies
+
 - **Core ML**: TensorFlow, PyTorch, scikit-learn
 - **Data Processing—**: pandas, numpy, yfinance
 - **Backtesting**: backtrader
@@ -67,24 +74,31 @@ pip install -r requirements.txt
 ## Usage
 
 **1. Environment Verification**
+、、、
 python env_test.py
+、、、
 
 **2. LSTM Model Training**
+、、、
 # Train the LSTM model (separate training script needed)
 python train_lstm.py --stock sh600372 --epochs 100
+、、、
 
 **3. Backtesting Execution**
+、、、
 python backtest_lstm.py
+、、、
 
 **4. Sector Analysis**
 
+、、、
 from stock_a import get_em_concept, get_em_concept_stocks
 # Get all concept sectors
 concepts = get_em_concept()
 
 # Get stocks in a specific sector (e.g., BK0918)
 stocks = get_em_concept_stocks("BK0918")
-
+、、、
 
 ## LSTM Trading Strategy
 
@@ -95,6 +109,7 @@ stocks = get_em_concept_stocks("BK0918")
 - Normalized technical indicators
 
 **Trading Logic**
+
 - Buy Signal: Predicted return > 0.15% AND market regime > 1 (non-bearish)
 - Sell Signal: Predicted return < 0% OR stop-loss/take-profit triggered
 - Stop-Loss: 3% from entry price
@@ -103,6 +118,7 @@ stocks = get_em_concept_stocks("BK0918")
 
 
 ## Market Regime Classification
+
 Uses 60-day rolling returns and volatility to classify market into 6 regimes:
 - Bear market, low volatility
 - Bear market, high volatility
@@ -113,7 +129,9 @@ Uses 60-day rolling returns and volatility to classify market into 6 regimes:
 
 
 ## Project Structure
+
 、、、
+
 text
 ai-quant-trading/
 ├── backtest_lstm.py          # Main backtesting script
@@ -131,6 +149,7 @@ ai-quant-trading/
 
 
 ## Performance Metrics
+
 The system tracks comprehensive performance metrics:
 - **Sharpe Ratio**: Risk-adjusted returns
 - **Maximum Drawdown**: Worst peak-to-trough decline
@@ -140,6 +159,7 @@ The system tracks comprehensive performance metrics:
 
 
 ## Financial Data Coverage
+
 The system includes comprehensive financial statement analysis with 400+ Chinese financial metrics, including:
 - Income statement items (revenue, expenses, profits)
 - Balance sheet metrics
@@ -149,6 +169,7 @@ The system includes comprehensive financial statement analysis with 400+ Chinese
 
 
 ## Key Innovations
+
 - **Regime-Aware Trading**: Adjusts strategy based on market conditions
 - **Sequence-to-One Prediction**: LSTM predicts next-period returns from 60-day sequences
 - **Realistic Backtesting**: Includes commissions, slippage, and market impact
