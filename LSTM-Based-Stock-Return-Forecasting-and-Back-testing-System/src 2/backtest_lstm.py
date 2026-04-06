@@ -9,11 +9,10 @@ import torch
 import torch.nn as nn
 import libs.stock_a as stock_a
 
-SEQ_LEN = 60               # 用最近 60 根 K 线做预测
-
 # ---------- 1) 加载 PyTorch 模型 ----------
 ckpt   = torch.load('models/lstm_model.pth', map_location='cpu')
 scaler = ckpt['scaler']
+SEQ_LEN = ckpt.get('seq_len', 60)  # 从模型读取序列长度，默认60
 
 class LSTMModel(torch.nn.Module):
     def __init__(self, input_size, hidden_size, output_size=1):
@@ -31,8 +30,8 @@ net.eval()
 # ---------- 2) Backtrader 策略 ----------
 class LSTMStrategy(bt.Strategy):
     params = dict(seq_len=SEQ_LEN,
-                  buy_thresh=0.015,   # 预测收益 > 0.15% 时买入
-                  sell_thresh=-0)
+                  buy_thresh=0.005,   # 预测收益 > 0.5% 时买入（降低阈值）
+                  sell_thresh=-0.005)  # 预测收益 < -0.5% 时卖出
 
     def __init__(self):
         self.dataclose = self.datas[0].close
@@ -72,7 +71,9 @@ class LSTMStrategy(bt.Strategy):
         with torch.no_grad():
             pred_ret = net(x).item()
         
-        #print(f"{self.data.datetime.date(0)}  pred_ret={pred_ret:.5f}")
+        # 打印预测值（每10天打印一次，避免刷屏）
+        if len(self.prices) % 10 == 0:
+            print(f"{self.data.datetime.date(0)}  regime={self.data.regime[0]:.0f}  pred_ret={pred_ret:.5f}")
         # 4) 交易逻辑
         if not self.position and pred_ret > self.p.buy_thresh:
             print("买入信号",self.p.buy_thresh)
@@ -94,7 +95,7 @@ class PandasDataEx(bt.feeds.PandasData):
 
 # ---------- 3) 回测引擎 ----------
 if __name__ == '__main__':
-    thresholds = np.load('thresholds.npz')
+    thresholds = np.load('models/thresholds.npz')
     #buy_range  = thresholds['buy']
     #sell_range = thresholds['sell']
 
@@ -125,11 +126,13 @@ if __name__ == '__main__':
     data['regime'] = data['regime'].map(regime_map).astype('float64')
 
     data = data.dropna(subset=['regime'])      # 关键：把 NaN 行扔掉
-    cols = [c for c in data.columns if c != 'regime'] + ['regime']
-    data = data[cols]
     del data['ret_q']
     del data['vol_q']
-    print(data)
+    
+    # 只保留必要的列，确保 regime 在第 5 列（Backtrader 要求）
+    data = data[['open', 'high', 'low', 'close', 'volume', 'regime']]
+    print(data.head())
+    print(f"数据形状: {data.shape}, 列: {list(data.columns)}")
     #data['regime'] = pd.Categorical(data['regime']).codes
     feed = PandasDataEx(dataname=data,
                         fromdate=data.index[0],
